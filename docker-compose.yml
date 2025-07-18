@@ -1,0 +1,37 @@
+version: "3.8"
+services: 
+    mysql: 
+        image: mysql:8
+        containerName: mysql
+        restart: always
+        environment: 
+            MYSQL_ROOT_PASSWORD: Aditya
+            MYSQL_DATABASE: crud_app
+        volumes:
+            - mysql-data: /var/lib/mysql
+            - ./mysql-init: /docker-entrypoint-initdb.d
+        ports:
+            - "3306:3306"
+    backend:
+        build: ./api
+        containerName: backend-api
+        environment: 
+            DB_HOST: mysql
+            DB_USERNAME: root
+            DB_PASSWORD: Aditya
+            DB_NAME: crud_app
+            JWT_SECRET: devopsShackSuperSecretKey
+            RESET_ADMIN_PASS: 'true'
+        depends_on:
+            - mysql
+        ports:
+            - "5000:5000"
+    frontend:
+        build: ./client
+        containerName: frontend-client
+        ports:
+            -   "3000:80"
+        depend_on:
+            - backend
+volumes: 
+    mysql-data:
