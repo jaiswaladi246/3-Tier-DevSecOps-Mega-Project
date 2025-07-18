@@ -2,13 +2,13 @@ version: "3.8"
 services: 
     mysql: 
         image: mysql:8
-        containerName: mysql
+        container_name: mysql
         restart: always
         environment: 
             MYSQL_ROOT_PASSWORD: Aditya
             MYSQL_DATABASE: crud_app
         volumes:
-            - mysql-data: /var/lib/mysql
+            - mysql-data:/var/lib/mysql
             - ./mysql-init: /docker-entrypoint-initdb.d
         ports:
             - "3306:3306"
@@ -28,10 +28,14 @@ services:
             - "5000:5000"
     frontend:
         build: ./client
-        containerName: frontend-client
+        container_name: frontend-client
         ports:
             -   "3000:80"
-        depend_on:
+        depends_on:
             - backend
 volumes: 
     mysql-data:
+            
+      
+            
+            
